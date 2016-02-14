@@ -54,14 +54,14 @@ void LCD_PrintString(const char* s) {
 }
 
 void clearLCD(){
-  
+  LCD_Write(0x1,0,2000);
 }
 
 /*
  Use the command for changing the DD RAM address to put the cursor somewhere.
  */
 void LCD_MoveCursor(unsigned char x, unsigned char y){
-  
+  LCD_Write(0x80|((y >> 1) << 2)|(x - 1),0,100);
 }
 
 void initLCD(void){//Done
