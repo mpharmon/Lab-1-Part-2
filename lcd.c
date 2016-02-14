@@ -11,27 +11,15 @@
 #include "lcd.h"
 #include "timer.h"
 
-/* The pins that you will use for the lcd control will be
- * LCD_RS      RC4
- * LCD_E       RC2
- * LCD_D4      RE7
- * LCD_D5      RE5
- * LCD_D6      RE3
- * LCD_D7      RE1
- * Use these so that we will be able to test your code for grading and to
- * help you debug your implementation!
- */
+#define TRISx_INPUT   1
+#define TRISx_OUTPUT  0
 
-#define LCD_DATA  
-#define LCD_RS  
-#define LCD_E   
-
-#define TRIS_D7 
-#define TRIS_D6
-#define TRIS_D5 
-#define TRIS_D4 
-#define TRIS_RS 
-#define TRIS_E  
+#define LCD_RS  LATCbits.LATC4
+#define LCD_E   LATCbits.LATC2
+#define LCD_D4  LATEbits.LATE7
+#define LCD_D5  LATEbits.LATE5
+#define LCD_D6  LATEbits.LATE3
+#define LCD_D7  LATEbits.LATE1
 
 /* This function should take in a two-byte word and writes either the lower or upper
  * byte to the last four bits of LATE. Additionally, according to the LCD data sheet
@@ -62,32 +50,95 @@ void writeLCD(unsigned char word, unsigned int commandType, unsigned int delayAf
 
 /* Given a character, write it to the LCD. RS should be set to the appropriate value.
  */
-void printCharLCD(char c) {
+void printCharLCD(char c){
     //TODO:
 }
-/*Initialize the LCD
- */
-void initLCD(void) {
-    // Setup D, RS, and E to be outputs (0).
 
-    // Initilization sequence utilizes specific LCD commands before the general configuration
-    // commands can be utilized. The first few initilition commands cannot be done using the
-    // WriteLCD function. Additionally, the specific sequence and timing is very important.
-
-    // Enable 4-bit interface
-
-    // Function Set (specifies data width, lines, and font.
-
-    // 4-bit mode initialization is complete. We can now configure the various LCD
-    // options to control how the LCD will function.
-
-    // TODO: Display On/Off Control
-        // Turn Display (D) Off
-    // TODO: Clear Display (The delay is not specified in the data sheet at this point. You really need to have the clear display delay here.
-    // TODO: Entry Mode Set
-        // Set Increment Display, No Shift (i.e. cursor move)
-    // TODO: Display On/Off Control
-        // Turn Display (D) On, Cursor (C) Off, and Blink(B) Off
+void initLCD(void){//Done
+  // Set Tristate Registers
+  TRISCbits.TRISC4 = TRISx_OUTPUT;// LCD_RS
+  TRISCbits.TRISC2 = TRISx_OUTPUT;// LCD_E
+  TRISEbits.TRISE7 = TRISx_OUTPUT;// LCD_D7
+  TRISEbits.TRISE5 = TRISx_OUTPUT;// LCD_D6
+  TRISEbits.TRISE3 = TRISx_OUTPUT;// LCD_D5
+  TRISEbits.TRISE1 = TRISx_OUTPUT;// LCD_D4
+  
+  //15mS Wait Required after Power On (delayUs takes maximum 5mS or 5000uS)
+  delayUs(5000);delayUs(5000);delayUs(5000);
+  
+  //First Initialization Sequence
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 1;
+  LCD_E = 1;
+  delayUs(5000);
+  LCD_E = 0;
+  
+  //Second Initialization Sequence
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 1;
+  LCD_E = 1;
+  delayUs(200);
+  LCD_E = 0;
+  
+  //Third Initialization Sequence
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 1;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  
+  //Set 4-bit Interface
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  
+  //Function Set
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  //NOTE: LCD_D6 May Need Changed to 1 
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  
+  //Turn Display Off
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  //Clear Display
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 1;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  
+  //Entry Mode Set
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  
+  //Turn Display On, Cursor Off Blink Off
+  LCD_RS = 0;LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
+  LCD_RS = 0;LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 0;LCD_D4 = 0;
+  LCD_E = 1;
+  delayUs(100);
+  LCD_E = 0;
 }
 
 /*
