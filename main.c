@@ -20,9 +20,12 @@
 int main(void)
 {
     SYSTEMConfigPerformance(10000000);
+    LCD_Init();
+    LCD_Clear();
     while(1)
     {
-        testLCD();
+      //testLCD();
+      LCD_OtherTest();
     }
     
     return 0;
