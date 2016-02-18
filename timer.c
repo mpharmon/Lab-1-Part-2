@@ -9,12 +9,13 @@
 #include "timer.h"
 
 void delayUs(unsigned int delay){
-  TMR1 = 0;// Reset Timer Register
-  PR1 = (delay * 10) - 1;// Period Register; Exponents of uS and MHz cancel
-  T1CONbits.TCKPS = 0;// Prescaler to 1
-  IFS0bits.T1IF = 0;// Interrupt Flag Down
-  IPC1bits.T1IP = 7;// Interrupt Priority Default
-  T1CONbits.ON = 1;// Start Timer
-  while(IFS0bits.T1IF == 0){};// Wait Loop
-  IFS0bits.T1IF = 0;
+
+  TMR2 = 0;// Reset Timer Register
+  PR2 = delay - 1;// Period Register; Exponents of uS and MHz cancel
+  T2CONbits.TCKPS = 3;// Prescaler to ...
+  IFS0bits.T2IF = 0;// Interrupt Flag Down
+  IPC2bits.T2IP = 7;// Interrupt Priority Default
+  T2CONbits.ON = 1;// Start Timer
+  while(IFS0bits.T2IF == 0){};// Wait Loop
+  IFS0bits.T2IF = 0;
 }
