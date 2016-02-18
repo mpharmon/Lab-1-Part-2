@@ -27,6 +27,5 @@ int main(void)
       //testLCD();
       LCD_OtherTest();
     }
-    
     return 0;
 }
