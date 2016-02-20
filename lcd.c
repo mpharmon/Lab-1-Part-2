@@ -19,28 +19,32 @@ void LCD_Write(unsigned char word, unsigned int commandType, unsigned int delayA
   else LCD_RS = 1;
   
   /*  Write First 4-bits of Word  */
-  LCD_D7 = word&0x80;LCD_D6 = word&0x40;LCD_D5 = word&0x20;LCD_D4 = word&0x10;
+  LCD_D7 = (word & 0x80) >> 7;LCD_D6 = (word & 0x40) >> 6;LCD_D5 = (word & 0x20) >> 5;LCD_D4 = (word & 0x10) >> 4;
   //Enable
+  delayUs(1);
   LCD_E = 1;
   //Delay
-  delayUs(delayAfter);
+  delayUs(1);
   //Disable
   LCD_E = 0;
+  delayUs(delayAfter);
   
   /*  Write Last 4-bits of Word  */
-  LCD_D7 = word&0x08;LCD_D6 = word&0x04;LCD_D5 = word&0x02;LCD_D4 = word&0x01;
+  LCD_D7 = (word & 0x08) >> 3;LCD_D6 = (word & 0x04) >> 2;LCD_D5 = (word & 0x02) >> 1;LCD_D4 = word & 0x01;
   //Enable
+  delayUs(1);
   LCD_E = 1;
   //Delay
-  delayUs(delayAfter);
+  delayUs(1);
   //Disable
-  LCD_E = 0;  
+  LCD_E = 0;
+  delayUs(delayAfter);  
 }
 
 /* Given a character, write it to the LCD. RS should be set to the appropriate value.
  */
 void LCD_PrintChar(char c){
-  LCD_Write(c,1,100);
+  LCD_Write(c,1,50);
 }
 
 /*
@@ -66,7 +70,7 @@ void LCD_MoveCursor(unsigned char x, unsigned char y){
 }
 
 void LCD_Init(void){
-  //Init LED
+  //Initialization LED
   TRISDbits.TRISD0 = TRISx_OUTPUT;
   LATDbits.LATD0 = 0;
   // Set Tristate Registers
@@ -77,107 +81,124 @@ void LCD_Init(void){
   TRISEbits.TRISE5 = TRISx_OUTPUT;// LCD_D6
   TRISEbits.TRISE3 = TRISx_OUTPUT;// LCD_D5
   TRISEbits.TRISE1 = TRISx_OUTPUT;// LCD_D4
-  
   //15mS Wait Required after Power On (delayUs takes maximum 5mS or 5000uS)
   delayUs(5000);delayUs(5000);delayUs(5000);
   
   //First Initialization Sequence
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 1;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
   delayUs(5000);
   
   //Second Initialization Sequence
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 1;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(150);
+  delayUs(100);
   
   //Third Initialization Sequence
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 1;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(50);
   
   //Set 4-bit Interface
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(50);
   
   //Function Set
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 1;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
-  LCD_E = 0;
-  delayUs(10);
-  LCD_RS = 0;
-  LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 0;LCD_D4 = 0;
-  LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
   delayUs(1);
+  LCD_RS = 0;
+  LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
+  LCD_E = 1;
+  delayUs(1);
+  LCD_E = 0;
+  delayUs(50);
   
   //Turn Display Off
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(1);
   LCD_RS = 0;
   LCD_D7 = 1;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
+  delayUs(50);
   
   //Clear Display
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(1);
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 1;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
+  delayUs(2000);
   
   //Entry Mode Set
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(1);
   LCD_RS = 0;
-  LCD_D7 = 0;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 1;
+  LCD_D7 = 0;LCD_D6 = 1;LCD_D5 = 1;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
+  delayUs(50);
   
   //Turn Display On, Cursor Off Blink Off
   LCD_RS = 0;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
-  delayUs(10);
+  delayUs(1);
   LCD_RS = 0;
   LCD_D7 = 1;LCD_D6 = 1;LCD_D5 = 0;LCD_D4 = 0;
+  delayUs(1);
   LCD_E = 1;
-  delayUs(10);
+  delayUs(1);
   LCD_E = 0;
+  delayUs(50);
   LATDbits.LATD0 = 1;
 }
 
@@ -191,22 +212,25 @@ void LCD_OtherTest(){
   delayUs(10);
   //Disable
   LCD_E = 0;
-  delayUs(10);
+  delayUs(50);
   /*  Write Last 4-bits of Word  */
   LCD_RS = 1;
   LCD_D7 = 0;LCD_D6 = 0;LCD_D5 = 0;LCD_D4 = 1;
   //Enable
   LCD_E = 1;
   //Delay
-  delayUs(10);
+  delayUs(50);
   //Disable
   LCD_E = 0;
-  
   int x = 0;
-  for(x = 0; x < 100; x++) delayUs(100);
+  for(x = 0; x < 1000; x++) delayUs(100);
+}
+void LCD_OtherTest2(){
+  LCD_PrintChar('A');
 }
 void LCD_Test(){
     int i = 0;
+    LCD_Clear();
     LCD_PrintChar('c');
     for(i = 0; i < 1000; i++) delayUs(1000);
     LCD_Clear();
