@@ -1,8 +1,16 @@
-/*
- * File:   timer.c
- * Authors:
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
  *
- * Created on December 30, 2014, 8:07 PM
+ *  Lab: 1 Part 2
+ * 
+ *  File: timer.c
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
  */
 
 #include <xc.h>

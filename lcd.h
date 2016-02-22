@@ -1,8 +1,16 @@
-/*
- * File:   lcd.h
- * Authors:
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
  *
- * Created on December 31, 2014, 1:39 PM
+ *  Lab: 1 Part 2
+ * 
+ *  File: lcd.c
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
  */
 
 void writeLCD(unsigned char word, unsigned int commandType, unsigned int delay);

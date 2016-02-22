@@ -1,11 +1,17 @@
-// ******************************************************************************************* //
-//
-// File:         lab1p2.c
-// Date:         12-30-2014
-// Authors:      Garrett Vanhoy
-//
-// Description: 
-// ******************************************************************************************* //
+/*  
+ *  Class: ECE372a
+ * 
+ *  Group: 209
+ *
+ *  Lab: 1 Part 2
+ * 
+ *  File: main.c
+ * 
+ *  Member: Michael Harmon (Software)
+ *          Abdul Rana (Hardware)
+ *          James Beulke (System Integration)
+ *          Ali Hassan (Quality Control)
+ */
 
 #include <xc.h>
 #include <sys/attribs.h>
@@ -13,9 +19,6 @@
 #include "timer.h"
 #include "config.h"
 #include "interrupt.h"
-
-
-// ******************************************************************************************* //
 
 int main(void)
 {
